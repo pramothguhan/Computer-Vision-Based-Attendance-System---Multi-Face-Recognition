@@ -1,0 +1,29 @@
+# Ignore the entire data folder
+data/
+
+# OR (if you only want to ignore celebA content inside it)
+data/celeba_custom_split/
+data/celeba-202599/
+data/img_align_celeba/
+
+data/celeba_custom_split/img_align_celeba/
+data/celeba_custom_split/*.txt
+data/celeba_custom_split/*.csv
+
+# Ignore all model weights
+**/*.pth
+
+# Ignore logs and outputs
+logs/
+results/
+*.log
+
+# Ignore notebook junk
+__pycache__/
+*.ipynb_checkpoints
+
+# Ignore zipped datasets
+*.zip
+
+# Ignore Kaggle token
+.kaggle/

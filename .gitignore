@@ -1,0 +1,32 @@
+# Ignore data, runs, and test_results directories
+data/
+runs/
+test_results/
+
+# Ignore common large or generated files
+*.pt
+*.zip
+*.tar
+*.tar.gz
+*.h5
+*.ckpt
+*.onnx
+
+# Ignore Python cache and virtual environment files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env/
+venv/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db

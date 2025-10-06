@@ -1,0 +1,6 @@
+kaggle
+pandas
+scikit-learn
+Pillow
+kornia>=0.7.3
+# Optional: DALI (cluster-specific wheels) -> see notes in trainer.py
