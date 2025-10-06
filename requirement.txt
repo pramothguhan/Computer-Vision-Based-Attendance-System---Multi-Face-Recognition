@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-kaggle
-pandas
-scikit-learn
-Pillow
-kornia>=0.7.3
-# Optional: DALI (cluster-specific wheels) -> see notes in trainer.py
-=======
 kornia>=0.7.3
 # Optional: DALI (cluster-specific wheels) -> see notes in trainer.py
 
@@ -28,4 +20,3 @@ tqdm>=4.65.0
 pyyaml>=6.0
 matplotlib>=3.7.0
 seaborn>=0.12.0
->>>>>>> milestone2
