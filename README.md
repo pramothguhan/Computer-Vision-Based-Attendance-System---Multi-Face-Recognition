@@ -5,6 +5,36 @@ It automatically identifies and localizes multiple celebrities in an image by tr
 
 ---
 
+## ⚙️ Setup Instructions
+
+### 🧱 1. Clone the Repository
+
+```bash
+git clone <your-repo-url>
+cd <your-repo-folder>
+```
+
+### 🧪 2. Create a Virtual Environment
+
+You can either use **conda** or **venv**.
+
+#### Using Conda:
+```bash
+conda create -n celeba python=3.10 -y
+conda activate celeba
+pip install -r requirements.txt
+```
+
+#### Using venv:
+```bash
+python -m venv celeba_env
+celeba_env\Scripts\activate      # On Windows
+source celeba_env/bin/activate   # On macOS/Linux
+pip install -r requirements.txt
+```
+
+---
+
 ## 📚 Project Overview
 
 ### Step 1 – Data Augmentation
