@@ -113,7 +113,7 @@ Computer-Vision/
 ├── main_generate_dataset.py
 ├── main_train.py
 ├── main_test.py
-├── detect_single_image.py                 # Milestone 4 script (final inference)
+├── detect_single_image.py                 # Step 4 script (final inference)
 ├── requirement.txt
 └── README.md
 ```
@@ -198,7 +198,7 @@ python detect_single_image.py
 
 | Input Image                                             | Detection Output                             |
 | ------------------------------------------------------- | -------------------------------------------- |
-| ![input](test_results/batch_detection/sample_input.jpg) | ![output](test_results/detection_result.jpg) |
+| ![input](samples/multiple_celebrities.jpg) | ![output](results/multiple_celebrities_detected.jpg) |
 
 ---
 
