@@ -3,37 +3,6 @@
 This project implements a **celebrity detection system** using the **YOLOv8 deep learning model**.  
 It automatically identifies and localizes multiple celebrities in an image by training a custom object detection model.
 
----
-
-## ⚙️ Setup Instructions
-
-### 🧱 1. Clone the Repository
-
-```bash
-git clone <your-repo-url>
-cd <your-repo-folder>
-```
-
-### 🧪 2. Create a Virtual Environment
-
-You can either use **conda** or **venv**.
-
-#### Using Conda:
-```bash
-conda create -n celeba python=3.10 -y
-conda activate celeba
-pip install -r requirements.txt
-```
-
-#### Using venv:
-```bash
-python -m venv celeba_env
-celeba_env\Scripts\activate      # On Windows
-source celeba_env/bin/activate   # On macOS/Linux
-pip install -r requirements.txt
-```
-
----
 
 ## 📚 Project Overview
 
@@ -151,13 +120,35 @@ Computer-Vision/
 
 ---
 
-## ⚙️ How to Run the Project
+## ⚙️ Setup Instructions
 
-### 1️⃣ Environment Setup
+### 🧱 1. Clone the Repository
 
 ```bash
-pip install -r requirement.txt
+git clone <your-repo-url>
+cd <your-repo-folder>
 ```
+
+### 🧪 2. Create a Virtual Environment
+
+You can either use **conda** or **venv**.
+
+#### Using Conda:
+```bash
+conda create -n celeba python=3.10 -y
+conda activate celeba
+pip install -r requirements.txt
+```
+
+#### Using venv:
+```bash
+python -m venv celeba_env
+celeba_env\Scripts\activate      # On Windows
+source celeba_env/bin/activate   # On macOS/Linux
+pip install -r requirements.txt
+```
+
+---
 
 **Required core libraries:**
 
@@ -167,6 +158,9 @@ pip install -r requirement.txt
 * numpy
 * pyyaml
 * tqdm
+---
+
+## ⚙️ How to Run the Project
 
 ### 2️⃣ Dataset Generation
 
@@ -246,9 +240,11 @@ python detect_single_image.py
 
 ### 👨‍💻 Authors
 
-Developed as part of the **Computer Vision Project — Celebrity Detection**  
-Milestone 4: *Given an image with multiple celebrities, the trained YOLOv8 model identifies each celebrity’s ID and location.*
+- Pramoth Guhan
+- Haritha Anand
+- Keshika Arunkumar
+- Rahul Odedra
+
+Developed as part of the **Computer Vision Based Attendance System Multi-Face Recognition**  
 
 ---
-
-✨ *End of Project — All milestones successfully completed.*
