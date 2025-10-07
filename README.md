@@ -1,199 +1,224 @@
-# 🎯 Computer Vision Attendance System — Multi-Face Recognition (CelebA)
+# 🎬 Celebrity Detection using YOLOv8
 
-This repository implements a deep learning pipeline to perform **identity recognition** using the **CelebA** dataset. It’s optimized to run on **HPC clusters** and avoids system crashes by skipping automatic unzipping of 200k+ images.
+This project implements a **celebrity detection system** using the **YOLOv8 deep learning model**.  
+It automatically identifies and localizes multiple celebrities in an image by training a custom object detection model.
 
 ---
 
-## 📦 1. Clone the Repository
+## 📚 Project Overview
+
+### Step 1 – Data Augmentation
+
+* Used **Albumentations** to generate more diverse training images (rotations, blurs, color shifts, etc.).
+* This improved model generalization and robustness.
+
+  ```bash
+  python main_augmentation.py
+  ```
+
+### Step 2 – Dataset Creation
+- Individual celebrity images were concatenated to form a **grid-style dataset** for object detection.
+- Each cell in the grid contains one celebrity’s face.
+- The YOLOv8 dataset (images + labels) was generated using:
+  ```bash
+  python main_generate_dataset.py
+  ```
+
+### Step 3 – Model Training
+
+* A YOLOv8 model was trained from the generated dataset.
+* Configuration parameters such as image size, epochs, and batch size are specified in `main_train.py`.
+
+  ```bash
+  python main_train.py
+  ```
+
+**Training results summary**
+
+```
+mAP50:     0.9793
+mAP50-95:  0.9784
+Precision: 0.9596
+Recall:    0.9397
+```
+
+### Step 4 – Multi-Celebrity Detection (Testing & Evaluation)
+
+Given an image containing multiple celebrities, the trained YOLOv8 model detects all faces, identifies each celebrity by **ID and name**, and provides **bounding box coordinates**.
+
+Example script:
 
 ```bash
-git clone <your-repo-url>
-cd <your-repo-folder>
+python detect_single_image.py
 ```
 
-Create a conda environment:
+**Sample Output**
+
+```
+Detected 36 celebrities:
+------------------------------------------------------------
+ 1. images__10046_ (ID: 0) Conf: 0.97
+ 2. images__7904_ (ID: 1) Conf: 0.95
+ ...
+
+Celebrities detected in grid layout:
+============================================================
+Row 1, Col 1  →  images__10046_
+Row 1, Col 3  →  images__7904_
+Row 2, Col 1  →  images__7904_
+Row 2, Col 5  →  images__619_
+============================================================
+
+Annotated image saved to: results/multiple_celebrities_detected.jpg
+```
+
+The saved image shows each detected celebrity face with bounding boxes and confidence scores.
+
+---
+
+## 🧩 Project Structure
+
+```
+Computer-Vision/
+│
+├── data/
+│   ├── Celebrity_Image_Subsets/           # Raw celebrity folders
+│   ├── celebrity_detection_dataset/       # YOLO dataset (images + labels)
+│   └── Celebrity_Image_Subsets.zip
+│
+├── runs/
+│   └── detect/
+│       ├── celebrity_detector/            # YOLO training results
+│       ├── val/                           # Validation runs
+│       └── val2/
+│
+├── src/
+│   ├── dataset/
+│   │   ├── augmentation.py                # Data augmentation pipeline
+│   │   └── dataset_generator.py           # Dataset creation logic
+│   │
+│   ├── models/
+│   │   └── yolo_model.py                  # YOLO model loader
+│   │
+│   ├── test/
+│   │   └── test.py                        # Detection + evaluation class
+│   │
+│   └── training/
+│       └── train.py                       # Model training class
+│
+├── test_results/
+│   ├── batch_detection/                   # Batch detection outputs
+│   └── detection_result.jpg
+│
+├── main_augmentation.py
+├── main_generate_dataset.py
+├── main_train.py
+├── main_test.py
+├── detect_single_image.py                 # Milestone 4 script (final inference)
+├── requirement.txt
+└── README.md
+```
+
+---
+
+## ⚙️ How to Run the Project
+
+### 1️⃣ Environment Setup
 
 ```bash
-conda create -n celeba python=3.10 -y
-conda activate celeba
-pip install -r requirements.txt
+pip install -r requirement.txt
 ```
 
----
+**Required core libraries:**
 
-## 📥 2. Download Annotations from Kaggle
+* ultralytics
+* opencv-python
+* albumentations
+* numpy
+* pyyaml
+* tqdm
 
-This only fetches identity labels and partition info — **not images**.
+### 2️⃣ Dataset Generation
 
 ```bash
-python scripts/download.py --data-dir ./dataset
+python main_generate_dataset.py
 ```
 
-You’ll get:
-
-```
-dataset/
- ├─ identity_CelebA.txt
- ├─ list_eval_partition.txt
- └─ celeba-dataset.zip
-```
-
----
-
-## 🗂 3. Manually Unzip the Images (Important!)
-
-To avoid system crashes during unzip, manually extract **only** the image folder from the ZIP:
+### 3️⃣ Data Augmentation
 
 ```bash
-mkdir -p data/celeba_custom_split/img_align_celeba
-unzip -q dataset/celeba-dataset.zip 'img_align_celeba/*' -d data/celeba_custom_split/
+python main_augmentation.py
 ```
 
-Or, on some clusters:
+### 4️⃣ Train the Model
 
 ```bash
-7z x dataset/celeba-dataset.zip -o./data/celeba_custom_split/
+python main_train.py
 ```
 
-After unzipping:
+### 5️⃣ Test / Detect
 
 ```bash
-ls data/celeba_custom_split/img_align_celeba | head -n 5
-000001.jpg
-000002.jpg
-...
+python main_test.py
 ```
 
----
-
-## ✂️ 4. Generate Train / Val / Test Splits
-
-This script generates `train_identity.txt`, `val_identity.txt`, and `test_identity.txt` from the annotation files.
+or run **multi-celebrity detection** on any single image:
 
 ```bash
-python scripts/download_data.py \
-  --data-dir ./data \
-  --identity-file ./dataset/identity_CelebA.txt
+python detect_single_image.py
 ```
 
 ---
 
-## 🧪 5. Train the Model
+## 📸 Example Output
 
-```bash
-python src/training/train.py \
-  --dataset_dir data/celeba_custom_split \
-  --batch_size 64 \
-  --epochs 10 \
-  --img_size 224 \
-  --augment standard
-```
-
-You’ll see training progress and validation accuracy printed per epoch.
-
-Model + logs will be saved to:
-
-```
-results/
- ├─ best_model.pth
- ├─ training_history.json
-```
+| Input Image                                             | Detection Output                             |
+| ------------------------------------------------------- | -------------------------------------------- |
+| ![input](test_results/batch_detection/sample_input.jpg) | ![output](test_results/detection_result.jpg) |
 
 ---
 
-## 🧠 Want to Use a Different Model?
+## 🧠 Key Components
 
-Add your new model architecture inside:
-
-```
-src/models/
-```
-
-Example:
-
-```bash
-src/models/custom_cnn.py
-```
-
-Then, update this line inside:
-
-```python
-# File: src/training/train.py
-from models.simple_cnn import create_model
-```
-
-Change to:
-
-```python
-from models.custom_cnn import create_model
-```
-
-Make sure `create_model(num_classes)` is defined in your new model file.
+| File                     | Description                                                     |
+| ------------------------ | --------------------------------------------------------------- |
+| `augmentation.py`        | Generates augmented images for each celebrity.                  |
+| `dataset_generator.py`   | Builds YOLO dataset with grid concatenation and annotations.    |
+| `train.py`               | Handles YOLOv8 training process.                                |
+| `test.py`                | Performs single/batch inference and evaluation.                 |
+| `detect_single_image.py` | Detects multiple celebrities and maps them to grid coordinates. |
 
 ---
 
-## 🔁 Want to Train on a Subset of Images?
+## 🏆 Results
 
-Open:
+| Metric        | Score  |
+| ------------- | ------ |
+| **mAP50**     | 0.9793 |
+| **mAP50-95**  | 0.9784 |
+| **Precision** | 0.9596 |
+| **Recall**    | 0.9397 |
 
-```python
-# File: src/data/dataset.py
-```
-
-Locate inside `__init__`:
-
-```python
-if subset_ids:
-    df = df[df.identity.isin(subset_ids)]
-```
-
-👉 You can pass your custom list of identity IDs (or even restrict the number of samples manually in that section) by modifying:
-
-```python
-df = df.head(5000)  # to use only first 5000 images (example)
-```
-
-Alternatively, update the `train_identity.txt` manually to include only selected identities or samples.
+**Model:** YOLOv8-Nano (`yolov8n.pt`)  
+**Training Epochs:** 60  
+**Image Size:** 640×640  
+**Batch Size:** 16  
 
 ---
 
-## 📁 Project Structure
+## 🧾 References
 
-```
-src/
- ├─ data/
- │   ├─ dataset.py            # Custom Dataset
- │   ├─ transforms.py         # Augmentations
- ├─ models/
- │   └─ simple_cnn.py         # Default CNN model
- └─ training/
-     └─ train.py              # Training script
-
-scripts/
- ├─ download.py               # Download annotations
- ├─ download_data.py          # Split generator
-results/
- └─ best_model.pth, logs, history.json
-```
+* [Ultralytics YOLOv8 Documentation](https://docs.ultralytics.com/)
+* [Albumentations Image Augmentation Library](https://albumentations.ai/)
+* [OpenCV Documentation](https://docs.opencv.org/)
 
 ---
 
-## 💡 Notes
+### 👨‍💻 Authors
 
-- `.gitignore` already excludes `*.jpg`, `*.pth`, `*.log`, etc.
-- Never extract 200k images using Python — unzip manually.
-- All data is read from `data/celeba_custom_split/`.
-
----
-
-## ✅ Final Checklist
-
-- [x] Clone repo and create environment
-- [x] Download annotation files only
-- [x] **Manually unzip** image folder into `data/celeba_custom_split/`
-- [x] Run `download_data.py` to create splits
-- [x] Train using `train.py`
+Developed as part of the **Computer Vision Project — Celebrity Detection**  
+Milestone 4: *Given an image with multiple celebrities, the trained YOLOv8 model identifies each celebrity’s ID and location.*
 
 ---
 
-Made for clean runs in **resource-limited or HPC environments** 💪
+✨ *End of Project — All milestones successfully completed.*

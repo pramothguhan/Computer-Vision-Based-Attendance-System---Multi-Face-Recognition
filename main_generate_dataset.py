@@ -2,14 +2,14 @@ import sys
 from pathlib import Path
 sys.path.append('src')
 
-from data.dataset_generator import CelebrityYOLODataset
+from dataset.dataset_generator import CelebrityYOLODataset
 
 def main():
     """Generate celebrity detection dataset."""
     
     # Configuration
-    BASE_DIR = "/home/arunkumar.k/Computer-Vision-Based-Attendance-System---Multi-Face-Recognition/data/Celebrity_Image_Subsets"
-    OUTPUT_DIR = "/home/arunkumar.k/Computer-Vision-Based-Attendance-System---Multi-Face-Recognition/data/celebrity_detection_dataset"
+    BASE_DIR = "data/Celebrity_Image_Subsets"
+    OUTPUT_DIR = "data/celebrity_detection_dataset"
     GRID_SIZE = (6, 6)
     IMG_SIZE = 640
     

@@ -2,13 +2,13 @@ import sys
 from pathlib import Path
 sys.path.append('src')
 
-from data.augmentation import CelebrityDataAugmentation
+from dataset.augmentation import CelebrityDataAugmentation
 
 def main():
     """Run data augmentation pipeline."""
     
     # Configuration
-    BASE_DIR = "/home/arunkumar.k/Computer-Vision-Based-Attendance-System---Multi-Face-Recognition/data/Celebrity_Image_Subsets"
+    BASE_DIR = "data/Celebrity_Image_Subsets"
     TARGET_IMAGES = 100
     
     print("="*60)

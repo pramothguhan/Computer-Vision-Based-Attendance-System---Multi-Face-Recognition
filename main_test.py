@@ -39,8 +39,8 @@ def main():
     
     # Test batch of images
     print("\n\n--- Batch Detection ---")
-    TEST_DIR = "/home/arunkumar.k/Computer-Vision-Based-Attendance-System---Multi-Face-Recognition/data/celebrity_detection_dataset/images/test"
-    OUTPUT_DIR = "/home/arunkumar.k/Computer-Vision-Based-Attendance-System---Multi-Face-Recognition/test_results/batch_detection"
+    TEST_DIR = "data/celebrity_detection_dataset/images/test"
+    OUTPUT_DIR = "test_results/batch_detection"
     
     all_detections = detector.detect_batch(
         image_dir=TEST_DIR,

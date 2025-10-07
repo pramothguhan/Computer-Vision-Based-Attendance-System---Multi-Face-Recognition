@@ -1,7 +1,9 @@
 import cv2
 import yaml
+import numpy as np
 from pathlib import Path
 from ultralytics import YOLO
+
 
 class CelebrityDetector:
     def __init__(self, model_path, data_yaml_path=None, conf_threshold=0.25):
@@ -147,3 +149,29 @@ class CelebrityDetector:
         print(f"  Recall: {results.box.mr:.4f}")
         
         return results
+
+
+# ------------------- NEW FUNCTION -------------------
+def map_detections_to_grid(detections, img_size=640, grid_rows=6, grid_cols=6):
+    """
+    Map YOLO detections to grid coordinates (row, col).
+
+    Args:
+        detections: list of detection dicts from detect_image()
+        img_size: image dimension (assumed square)
+        grid_rows, grid_cols: number of rows/cols in grid
+
+    Returns:
+        list of (row, col, celebrity_name)
+    """
+    cell_size = img_size / grid_rows
+    mapped = []
+
+    for det in detections:
+        x_center, y_center, _, _ = det["bbox_center"]
+        col = int(x_center // cell_size) + 1
+        row = int(y_center // cell_size) + 1
+        mapped.append((row, col, det["celebrity_name"]))
+
+    mapped.sort(key=lambda x: (x[0], x[1]))
+    return mapped

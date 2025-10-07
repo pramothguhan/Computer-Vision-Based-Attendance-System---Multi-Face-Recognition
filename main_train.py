@@ -8,7 +8,7 @@ def main():
     """Train celebrity detection model."""
     
     # Configuration
-    DATA_YAML = "/home/arunkumar.k/Computer-Vision-Based-Attendance-System---Multi-Face-Recognition/data/celebrity_detection_dataset/data.yaml"
+    DATA_YAML = "data/celebrity_detection_dataset/data.yaml"
     MODEL_SIZE = 'n'  # Options: 'n', 's', 'm', 'l', 'x'
     DEVICE = '0'  # '0' for GPU, 'cpu' for CPU
     
