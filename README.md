@@ -125,8 +125,8 @@ Computer-Vision/
 ### 🧱 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
-cd <your-repo-folder>
+git clone https://github.com/pramothguhan/Computer-Vision-Based-Attendance-System---Multi-Face-Recognition.git
+cd Computer-Vision-Based-Attendance-System---Multi-Face-Recognition
 ```
 
 ### 🧪 2. Create a Virtual Environment
